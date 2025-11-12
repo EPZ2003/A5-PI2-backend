@@ -1,0 +1,30 @@
+{	"scripts": {
+		"dev":"npx ts-node-dev --respawn --transpile-only --exit-child src/Server.ts",
+		"build":"npx tsc",
+		"start":"npm run db:start; npm run build; node dist/Server.js",
+		"iniate":"npm install; npm run db:create; echo \"Installation is successful you can now run npm start\" ",
+		"db:create": "docker rm -f durablinator_db;docker run -d --name durablinator_db --env-file .env -p 5432:5432 -v postgres_data:/var/lib/postgresql/data postgres:16-alpine",
+		"db:start" : "docker start durablinator_db"
+},
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "exceljs": "^4.4.0",
+    "express": "^5.1.0",
+    "express-async-handler": "^1.2.0",
+    "ioserver": "^2.0.6",
+    "luxon": "^3.7.2",
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.7",
+    "sequelize-typescript": "^2.1.6",
+    "typedi": "^0.10.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/luxon": "^3.7.1",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.3.0",
+    "sequelize-cli": "^6.6.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.2"
+  }
+}
