@@ -2,6 +2,7 @@
 		"dev":"npx ts-node-dev --respawn --transpile-only --exit-child src/Server.ts",
 		"build":"npx tsc",
 		"start":"npm run db:start; npm run build; node dist/Server.js",
+    "start-windows":"npm run db:start &&  npm run build &&  node dist/Server.js",
 		"iniate":"npm install; npm run db:create; echo \"Installation is successful you can now run npm start\" ",
 		"initiate-windows":"npm install && npm run db:create-windows && echo \"Installation is successful you can now run npm start\" ",
 		"db:create": "docker rm -f durablinator_db;docker run -d --name durablinator_db --env-file .env -p 5432:5432 -v postgres_data:/var/lib/postgresql/data postgres:16-alpine",
