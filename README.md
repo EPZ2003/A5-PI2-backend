@@ -6,9 +6,13 @@
 > npm start
 
 ## How to start for the first time for *WINDOWS* - be on develop branch
-> npm run initiate-windows
+> npm run initiate-windows 
 
-> npm start
+> npm start-windows
 
 ## For other times 
+for linux :
 > npm start
+
+for windows :
+> npm run start-windows
