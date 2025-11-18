@@ -29,6 +29,9 @@ export default class V1GazEmission extends AbstracEntity {
 	
 	@Column(DataTypes.FLOAT)
 	resultElement1?:number
+	
+	@Column(DataTypes.BOOLEAN)
+	containsRareMaterial!: boolean
 
 	@Column
 	criteria1?:number

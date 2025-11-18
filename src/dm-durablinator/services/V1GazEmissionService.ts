@@ -27,7 +27,7 @@ export default class V1GazEmissionService {
 						weightSecondMaterialCarbonneEmission: dto.weightSecondMaterialCarbonneEmission,
 						secondMaterialCarbonneEmission: dto.secondMaterialCarbonneEmission,
 						resultElement1: this.calculateElement1(dto),
-						criteria1: this.pointFromElement1(dto.resultElement1)
+						criteria1: this.pointFromEl1Crit1(this.calculateElement1(dto)) + this.pointFromEl2Crit1(dto.containsRareMaterial)
 					})
 				}else{	
 
@@ -40,7 +40,7 @@ export default class V1GazEmissionService {
 						weightSecondMaterialCarbonneEmission: dto.weightSecondMaterialCarbonneEmission,
 						secondMaterialCarbonneEmission: dto.secondMaterialCarbonneEmission,
 						resultElement1: this.calculateElement1(dto),
-						criteria1: this.pointFromElement1(dto.resultElement1) //+ ELEMENT 2 TO DO IT
+						criteria1: this.pointFromEl1Crit1(this.calculateElement1(dto)) + this.pointFromEl2Crit1(dto.containsRareMaterial)
 					})
 				}
 
@@ -64,12 +64,11 @@ export default class V1GazEmissionService {
 		const ecp = dto.primaryMaterialCarbonneEmission;
 		const ec1 = dto.firstMaterialCarbonneEmission;
 		const ec2 = dto.secondMaterialCarbonneEmission;
-
 		return  (mp*ecp + m1*ec1+ m2*ec2) / (mp + m1 + m2)
 		
 	}
 	//Refer to tab-1 page 26
-	pointFromElement1 = (value:number | undefined): number => {
+	pointFromEl1Crit1 = (value:number | undefined): number => {
 		if(!value ){return 0;}
 		else if (value < 0.5){return 10}
 		else if (value >= 0.5 && value < 1){return 8}
@@ -80,5 +79,9 @@ export default class V1GazEmissionService {
 		else if (value >= 50){return 0}
 		else{return 0}
 
+	}
+	//Refers to tab-2 page 27
+	pointFromEl2Crit1= (value:boolean) => {
+		return (value==true) ? 0 : 5;
 	}
 }

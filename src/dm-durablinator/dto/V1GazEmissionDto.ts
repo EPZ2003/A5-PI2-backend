@@ -15,7 +15,9 @@ export default class V1GazEmissionDto {
 	secondMaterialCarbonneEmission!: number;
 
 	resultElement1?: number;
-	
+
+	containsRareMaterial!:boolean;
+
 	criteria1?: number;
 
 	constructor(v1GazEmission: V1GazEmission){
@@ -27,6 +29,7 @@ export default class V1GazEmissionDto {
 		this.weightSecondMaterialCarbonneEmission = v1GazEmission.weightSecondMaterialCarbonneEmission
 		this.secondMaterialCarbonneEmission = v1GazEmission.secondMaterialCarbonneEmission;
 		this.resultElement1 = v1GazEmission.resultElement1 ?? 0
+		this.containsRareMaterial = v1GazEmission.containsRareMaterial
 		this.criteria1 = v1GazEmission.criteria1 ?? 0
 	}
 }
