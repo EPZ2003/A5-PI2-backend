@@ -17,8 +17,16 @@ export default class V1GazEmissionDto {
 	resultElement1?: number;
 
 	containsRareMaterial!:boolean;
+	
+	totalElectrictyMix!:number;
+
+	greenConsomation!:boolean;
+
+	greenProductionSite!:boolean;
 
 	criteria1?: number;
+
+	criteria2?: number;
 
 	constructor(v1GazEmission: V1GazEmission){
 		this.id=v1GazEmission.id
@@ -30,6 +38,10 @@ export default class V1GazEmissionDto {
 		this.secondMaterialCarbonneEmission = v1GazEmission.secondMaterialCarbonneEmission;
 		this.resultElement1 = v1GazEmission.resultElement1 ?? 0
 		this.containsRareMaterial = v1GazEmission.containsRareMaterial
-		this.criteria1 = v1GazEmission.criteria1 ?? 0
+		this.totalElectrictyMix = v1GazEmission.totalElectrictyMix;
+		this.greenConsomation = v1GazEmission.greenConsomation ?? false;
+		this.greenProductionSite = v1GazEmission.greenProductionSite ?? false;
+		this.criteria1 = v1GazEmission.criteria1 ?? 0;
+		this.criteria2 = v1GazEmission.criteria2 ?? 0;
 	}
 }

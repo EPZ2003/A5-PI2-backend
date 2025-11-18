@@ -32,7 +32,19 @@ export default class V1GazEmission extends AbstracEntity {
 	
 	@Column(DataTypes.BOOLEAN)
 	containsRareMaterial!: boolean
+	
+	@Column
+	totalElectrictyMix!: number
+
+	@Column(DataTypes.BOOLEAN)
+	greenConsomation!:boolean
+
+	@Column(DataTypes.BOOLEAN)
+	greenProductionSite!:boolean
 
 	@Column
 	criteria1?:number
+
+	@Column
+	criteria2?:number
 }
