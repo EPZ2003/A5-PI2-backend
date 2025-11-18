@@ -26,7 +26,8 @@ export default class V1GazEmissionService {
 						firstMaterialCarbonneEmission: dto.firstMaterialCarbonneEmission,
 						weightSecondMaterialCarbonneEmission: dto.weightSecondMaterialCarbonneEmission,
 						secondMaterialCarbonneEmission: dto.secondMaterialCarbonneEmission,
-						resultElement1: this.calculateElement1(dto) 
+						resultElement1: this.calculateElement1(dto),
+						criteria1: this.pointFromElement1(dto.resultElement1)
 					})
 				}else{	
 
@@ -38,7 +39,8 @@ export default class V1GazEmissionService {
 						firstMaterialCarbonneEmission: dto.firstMaterialCarbonneEmission,
 						weightSecondMaterialCarbonneEmission: dto.weightSecondMaterialCarbonneEmission,
 						secondMaterialCarbonneEmission: dto.secondMaterialCarbonneEmission,
-						resultElement1: this.calculateElement1(dto) 
+						resultElement1: this.calculateElement1(dto),
+						criteria1: this.pointFromElement1(dto.resultElement1) //+ ELEMENT 2 TO DO IT
 					})
 				}
 
@@ -65,5 +67,18 @@ export default class V1GazEmissionService {
 
 		return  (mp*ecp + m1*ec1+ m2*ec2) / (mp + m1 + m2)
 		
+	}
+	//Refer to tab-1 page 26
+	pointFromElement1 = (value:number | undefined): number => {
+		if(!value ){return 0;}
+		else if (value < 0.5){return 10}
+		else if (value >= 0.5 && value < 1){return 8}
+		else if (value >= 1 && value < 5){return 6}
+		else if (value >= 5 && value < 10){return 4}
+		else if (value >= 10 && value < 25){return 2}
+		else if (value >= 25 && value <50){return 1}
+		else if (value >= 50){return 0}
+		else{return 0}
+
 	}
 }

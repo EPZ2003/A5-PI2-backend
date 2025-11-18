@@ -29,4 +29,7 @@ export default class V1GazEmission extends AbstracEntity {
 	
 	@Column(DataTypes.FLOAT)
 	resultElement1?:number
+
+	@Column
+	criteria1?:number
 }

@@ -15,6 +15,8 @@ export default class V1GazEmissionDto {
 	secondMaterialCarbonneEmission!: number;
 
 	resultElement1?: number;
+	
+	criteria1?: number;
 
 	constructor(v1GazEmission: V1GazEmission){
 		this.id=v1GazEmission.id
@@ -25,5 +27,6 @@ export default class V1GazEmissionDto {
 		this.weightSecondMaterialCarbonneEmission = v1GazEmission.weightSecondMaterialCarbonneEmission
 		this.secondMaterialCarbonneEmission = v1GazEmission.secondMaterialCarbonneEmission;
 		this.resultElement1 = v1GazEmission.resultElement1 ?? 0
+		this.criteria1 = v1GazEmission.criteria1 ?? 0
 	}
 }
