@@ -4,6 +4,7 @@ import {Sequelize} from 'sequelize-typescript';
 import { Server as IoServer } from 'socket.io';
 import AppResources from './AppRessources';
 import {Constant} from './constant/Constant';
+import V1GazEmission from './dm-durablinator/entities/V1GazEmission';
 
 class Server {
 	public app = express();
@@ -19,7 +20,7 @@ class Server {
 		port: this.port,
 		dialect: "postgres",
 		dialectOptions: {},
-		models: [/*ENTITY TO PUT IN THERE*/],
+		models: [V1GazEmission,/*ENTITY TO PUT IN THERE*/],
 		logging:false
 	})
 
