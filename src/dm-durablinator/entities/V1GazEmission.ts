@@ -42,9 +42,30 @@ export default class V1GazEmission extends AbstracEntity {
 	@Column(DataTypes.BOOLEAN)
 	greenProductionSite!:boolean
 
+	@Column(DataTypes.BOOLEAN)
+	productionSiteFrench!: boolean
+
+	@Column(DataTypes.FLOAT)
+	transportCoef1!:number
+
+	@Column(DataTypes.FLOAT)
+	transportCoef2!: number
+
+	@Column
+	distanceMode1!: number
+
+	@Column
+	distanceMode2!: number
+
+	@Column
+	fabricationMultisite!:number
+
 	@Column
 	criteria1?:number
 
 	@Column
 	criteria2?:number
+
+	@Column
+	criteria3?:number
 }
