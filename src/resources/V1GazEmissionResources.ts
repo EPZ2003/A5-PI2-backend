@@ -16,13 +16,21 @@ export default class V1GazEmissionRessources {
 	}
 
 	constructor(){
-		this.save()
+		this.save();
+		this.getVulnerability();
 	}
 
 	save(){
 		this._router.post('',expressAsyncHandler(async(req,res) => {
 			const dto: V1GazEmissionDto = req.body;
 			res.send(await this.v1GazEmissionService.save(dto)).status(200)
+		}))
+	}
+
+	getVulnerability(){
+		this._router.get('/getV1/:id',expressAsyncHandler(async(req,res)=>{
+			const id=req.params.id ? BigInt(req.params.id) : undefined
+			res.send(await this.v1GazEmissionService.getVulnerability(id)).status(200)
 		}))
 	}
 

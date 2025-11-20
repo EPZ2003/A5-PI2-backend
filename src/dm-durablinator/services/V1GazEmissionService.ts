@@ -76,6 +76,24 @@ export default class V1GazEmissionService {
 		})
 	}
 
+	getVulnerability = async (id:bigint|undefined) => {
+		try{
+			if (id) {
+				const entity = await this.v1GazEmissionDao.findById(id)
+				if (entity){
+					const v1GazEmission = entity.dataValues
+					return this.calculateVulnerability(v1GazEmission.criteria1,v1GazEmission.criteria2,v1GazEmission.criteria3)
+				} else {
+					throw new Error('No V1 entity finded')
+				}
+			}else{
+				throw new Error('No provided id')
+			}
+		}catch(err){
+			console.log(err)
+		}	
+	}
+
 	calculateElement1 = (dto:V1GazEmissionDto) => {
 		
 		const mp = dto.weightPrimaryMaterialCarbonneEmission;
@@ -136,8 +154,14 @@ export default class V1GazEmissionService {
 		else{return 0}
 
 	}
-
+	//Refer to tab-8 page 33
 	pointFromEl2Crit3 = (numberFabSite:number) => {
 		return 	(numberFabSite == 1) ? 5 : (numberFabSite == 2) ? 2 : 0
+	}
+	
+	//Refer to calcul 6.4 page 33
+	calculateVulnerability = (pointCrit1:number | undefined,pointCrit2:number | undefined,pointCrit3:number | undefined) =>{
+		if(pointCrit1==undefined || pointCrit2==undefined || pointCrit3==undefined){return;}
+		return (pointCrit1 + pointCrit2 + pointCrit3) / 2
 	}
 }
