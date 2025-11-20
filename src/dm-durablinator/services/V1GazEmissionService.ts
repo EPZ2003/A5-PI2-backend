@@ -27,7 +27,11 @@ export default class V1GazEmissionService {
 						weightSecondMaterialCarbonneEmission: dto.weightSecondMaterialCarbonneEmission,
 						secondMaterialCarbonneEmission: dto.secondMaterialCarbonneEmission,
 						resultElement1: this.calculateElement1(dto),
-						criteria1: this.pointFromEl1Crit1(this.calculateElement1(dto)) + this.pointFromEl2Crit1(dto.containsRareMaterial)
+						totalElectrictyMix: dto.totalElectrictyMix,
+						greenConsomation: dto.greenConsomation,
+						greenConsomatio: dto.greenProductionSite,
+						criteria1: this.pointFromEl1Crit1(this.calculateElement1(dto)) + this.pointFromEl2Crit1(dto.containsRareMaterial),
+						criteria2: this.pointFromEl1Crit2(dto.totalElectrictyMix) + this.pointFromEl2Crit2(dto.greenConsomation, dto.greenProductionSite),
 					})
 				}else{	
 
@@ -40,7 +44,11 @@ export default class V1GazEmissionService {
 						weightSecondMaterialCarbonneEmission: dto.weightSecondMaterialCarbonneEmission,
 						secondMaterialCarbonneEmission: dto.secondMaterialCarbonneEmission,
 						resultElement1: this.calculateElement1(dto),
-						criteria1: this.pointFromEl1Crit1(this.calculateElement1(dto)) + this.pointFromEl2Crit1(dto.containsRareMaterial)
+						totalElectrictyMix: dto.totalElectrictyMix,
+						greenConsomation: dto.greenConsomation,
+						greenConsomatio: dto.greenProductionSite,
+						criteria1: this.pointFromEl1Crit1(this.calculateElement1(dto)) + this.pointFromEl2Crit1(dto.containsRareMaterial),
+						criteria2: this.pointFromEl1Crit2(dto.totalElectrictyMix) + this.pointFromEl2Crit2(dto.greenConsomation, dto.greenProductionSite),
 					})
 				}
 
@@ -81,7 +89,24 @@ export default class V1GazEmissionService {
 
 	}
 	//Refers to tab-2 page 27
-	pointFromEl2Crit1= (value:boolean) => {
+	pointFromEl2Crit1= (value:boolean | undefined) => {
 		return (value==true) ? 0 : 5;
+	}
+
+	pointFromEl1Crit2= (value:number) => {
+				
+		if(!value ){return 0;}
+		else if (value < 20){return 5}
+		else if (value < 20 && value < 40){return 4}
+		else if (value >= 40 && value < 200){return 3}
+		else if (value >= 200 && value < 400){return 2}
+		else if (value >= 400 && value < 600){return 1}
+		else if (value >= 600){return 0}
+		else{return 0}
+	}
+
+	//Refer to tab-5 page 29
+	pointFromEl2Crit2= (greenConsomation:boolean, greenProductionSite:boolean) => {
+		return (greenConsomation && greenProductionSite ) ? 10 : (greenConsomation || greenProductionSite) ? 5 : 0
 	}
 }
