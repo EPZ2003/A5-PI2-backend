@@ -68,4 +68,5 @@ export default class V1GazEmission extends AbstracEntity {
 
 	@Column
 	criteria3?:number
+
 }

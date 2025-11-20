@@ -61,9 +61,11 @@ export default class V1GazEmissionDto {
 		this.distanceMode1=v1GazEmission.distanceMode1;
 		this.distanceMode2=v1GazEmission.distanceMode2;
 		this.fabricationMultisite=v1GazEmission.fabricationMultisite;
-
+		
+		//Criteria used to calculate the vulnerabilityEmiGaz
 		this.criteria1 = v1GazEmission.criteria1 ?? 0;
 		this.criteria2 = v1GazEmission.criteria2 ?? 0;
 		this.criteria3 = v1GazEmission.criteria3 ?? 0;
+
 	}
 }
