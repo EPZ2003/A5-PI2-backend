@@ -30,8 +30,15 @@ export default class V1GazEmissionService {
 						totalElectrictyMix: dto.totalElectrictyMix,
 						greenConsomation: dto.greenConsomation,
 						greenConsomatio: dto.greenProductionSite,
+						productionSiteFrench: dto.productionSiteFrench,
+						transportCoef1: dto.transportCoef1,
+						transportCoef2: dto.transportCoef2,
+						distanceMode1: dto.distanceMode1,
+						distanceMode2: dto.distanceMode2,
+						fabricationMultisite: dto.fabricationMultisite,
 						criteria1: this.pointFromEl1Crit1(this.calculateElement1(dto)) + this.pointFromEl2Crit1(dto.containsRareMaterial),
 						criteria2: this.pointFromEl1Crit2(dto.totalElectrictyMix) + this.pointFromEl2Crit2(dto.greenConsomation, dto.greenProductionSite),
+						criteria3: this.pointFromEl1Crit3(dto) + this.pointFromEl2Crit3(dto.fabricationMultisite),
 					})
 				}else{	
 
@@ -47,8 +54,14 @@ export default class V1GazEmissionService {
 						totalElectrictyMix: dto.totalElectrictyMix,
 						greenConsomation: dto.greenConsomation,
 						greenConsomatio: dto.greenProductionSite,
+						transportCoef1: dto.transportCoef1,
+						transportCoef2: dto.transportCoef2,
+						distanceMode1: dto.distanceMode1,
+						distanceMode2: dto.distanceMode2,
+						fabricationMultisite: dto.fabricationMultisite,
 						criteria1: this.pointFromEl1Crit1(this.calculateElement1(dto)) + this.pointFromEl2Crit1(dto.containsRareMaterial),
 						criteria2: this.pointFromEl1Crit2(dto.totalElectrictyMix) + this.pointFromEl2Crit2(dto.greenConsomation, dto.greenProductionSite),
+						criteria3: this.pointFromEl1Crit3(dto) + this.pointFromEl2Crit3(dto.fabricationMultisite),
 					})
 				}
 
@@ -105,8 +118,26 @@ export default class V1GazEmissionService {
 		else{return 0}
 	}
 
-	//Refer to tab-5 page 29
+	//Refer to calcul de l'impact et attribution des points page 32
 	pointFromEl2Crit2= (greenConsomation:boolean, greenProductionSite:boolean) => {
 		return (greenConsomation && greenProductionSite ) ? 10 : (greenConsomation || greenProductionSite) ? 5 : 0
+	}
+
+	//Refet to tab-7 page 32
+	pointFromEl1Crit3 = (dto:V1GazEmissionDto) => {
+		const impactCarbonne  = ( dto.transportCoef1 * dto.distanceMode1) + (dto.transportCoef2 * dto.distanceMode2)
+
+		if (impactCarbonne < 50){return 5}
+		else if (impactCarbonne >= 50 && impactCarbonne < 100){return 4}
+		else if (impactCarbonne >= 100 && impactCarbonne < 200){return 3}
+		else if (impactCarbonne >= 200 && impactCarbonne < 300){return 2}
+		else if (impactCarbonne >= 300 && impactCarbonne < 500){return 1}
+		else if (impactCarbonne >= 500){return 0}
+		else{return 0}
+
+	}
+
+	pointFromEl2Crit3 = (numberFabSite:number) => {
+		return 	(numberFabSite == 1) ? 5 : (numberFabSite == 2) ? 2 : 0
 	}
 }
