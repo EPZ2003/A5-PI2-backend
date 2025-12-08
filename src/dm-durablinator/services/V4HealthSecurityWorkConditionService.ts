@@ -1,0 +1,75 @@
+import {Inject, Service} from "typedi";
+import V4HealthSecurityWorkConditionDao from "../dao/V4HealthSecurityWorkConditionDao";
+import V4HealthSecurityWorkConditionDto from "../dto/V4HealthSecurityWorkConditionDto";
+import {server} from "../../Server";
+import V4HealthSecurityWorkCondition from "../entities/V4HealthSecurityWorkCondition";
+
+@Service()
+export default class V4HealthSecurityWorkConditionService {
+	@Inject(()=>V4HealthSecurityWorkConditionDao)
+	V4HealthSecurityWorkConditionDao: V4HealthSecurityWorkConditionDao;
+
+	save = async (dto:V4HealthSecurityWorkConditionDto) =>{
+		return await server.sequelize.transaction(async t => {
+			try {
+				let v4HealthSecurityWorkCondition: V4HealthSecurityWorkCondition | null;
+				//If we want to update the data 
+				if (dto.id) {
+					v4HealthSecurityWorkCondition = await this.V4HealthSecurityWorkConditionDao.findById(BigInt(dto.id))
+					if (!v4HealthSecurityWorkCondition) {
+						throw new Error('V4 not found')
+					}
+					await v4HealthSecurityWorkCondition.update({
+						averageHealthInvest : dto.averageHealthInvest,
+						totalHealhInvest : dto.totalHealhInvest,
+						budgetWorkHealthSecurity : dto.budgetWorkHealthSecurity,
+						totalWorkerNumber: dto.totalWorkerNumber,
+						criteria1 : this.pointFromEl1Crit1(dto.averageHealthInvest, dto.totalHealhInvest) + this.pointFromEl2Crit1(dto.budgetWorkHealthSecurity, dto.totalWorkerNumber)
+					})
+				}else {
+					//Create a new instance
+					v4HealthSecurityWorkCondition = V4HealthSecurityWorkCondition.build({
+						averageHealthInvest : dto.averageHealthInvest,
+						totalHealhInvest : dto.totalHealhInvest,
+						budgetWorkHealthSecurity : dto.budgetWorkHealthSecurity,
+						totalWorkerNumber: dto.totalWorkerNumber,
+						criteria1 : this.pointFromEl1Crit1(dto.averageHealthInvest, dto.totalHealhInvest) + this.pointFromEl2Crit1(dto.budgetWorkHealthSecurity, dto.totalWorkerNumber)
+					})	
+				}
+				//save the instance
+				await v4HealthSecurityWorkCondition.save({transaction:t})
+				return v4HealthSecurityWorkCondition
+			}catch(err){
+				console.log(err)
+			}
+		})
+	}
+
+	//Refer to  calcul page 45 AND tab-15 page 46
+	pointFromEl1Crit1 = (averageHealthInvest: number | undefined,totalHealhInvest:number | undefined):number =>{
+		if (!averageHealthInvest || !totalHealhInvest || totalHealhInvest ==0){return 0;}
+		//Calcul page 45
+		//It is in pourcentage because averageHealthInvest is a part totalHealhInvest 
+		const value = (averageHealthInvest / totalHealhInvest); 
+
+		if (value < 0.01){return 0;}
+		else if (value >= 0.01 && value < 0.1){return 2;}
+		else if (value >=0.1){return 3;}
+		else{return 0;}
+	}
+
+	//Refer to Calcul AND tab-16 page 47
+	pointFromEl2Crit1= (budgetWorkHealthSecurity:number|undefined, totalWorkerNumber: number| undefined):number => {
+		if (!budgetWorkHealthSecurity || !totalWorkerNumber || totalWorkerNumber == 0){return 0;}
+		//Refer to calcul page 47 
+		const value = budgetWorkHealthSecurity / totalWorkerNumber;
+
+		if (value < 50){return 0;}
+		else if (value >= 50 && value < 100){return 2;}
+		else if (value >=100){return 4;}
+		else{return 0;}
+
+		
+	}
+	
+}

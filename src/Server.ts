@@ -5,6 +5,7 @@ import { Server as IoServer } from 'socket.io';
 import AppResources from './AppRessources';
 import {Constant} from './constant/Constant';
 import V1GazEmission from './dm-durablinator/entities/V1GazEmission';
+import V4HealthSecurityWorkCondition from './dm-durablinator/entities/V4HealthSecurityWorkCondition';
 
 class Server {
 	public app = express();
@@ -20,7 +21,7 @@ class Server {
 		port: this.port,
 		dialect: "postgres",
 		dialectOptions: {},
-		models: [V1GazEmission,/*ENTITY TO PUT IN THERE*/],
+		models: [V1GazEmission,V4HealthSecurityWorkCondition/*ENTITY TO PUT IN THERE*/],
 		logging:false
 	})
 
