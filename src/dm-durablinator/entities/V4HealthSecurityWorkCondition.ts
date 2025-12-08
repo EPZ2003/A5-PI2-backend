@@ -26,6 +26,15 @@ export default class V4HealthSecurityWorkCondition extends AbstracEntity{
 
 	@Column(DataTypes.FLOAT)
 	healthSecurityPrevention!:number
+	
+	@Column(DataTypes.BOOLEAN)
+	workDeath!:boolean;
+
+	@Column
+	workAccidentNumber!:number;
+
+	@Column
+	totalWorkHour!:number;
 
 	@Column
 	criteria1!: number;
@@ -35,5 +44,8 @@ export default class V4HealthSecurityWorkCondition extends AbstracEntity{
 
 	@Column
 	criteria3!:number;
+
+	@Column
+	criteria4!: number;
 
 }

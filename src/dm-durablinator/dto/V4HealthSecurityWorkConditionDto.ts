@@ -14,6 +14,12 @@ export default class V4HealthSecurityWorkConditionDto{
 	scoreSPI!:number;
 
 	healthSecurityPrevention!: number;
+
+	workDeath!: boolean;
+
+	workAccidentNumber!: number;
+
+	totalWorkHour!:number;
 	
 	criteria1?: number;
 	
@@ -21,6 +27,7 @@ export default class V4HealthSecurityWorkConditionDto{
 
 	criteria3?: number;
 
+	criteria4?: number;
 
 	constructor(v4HealthSecurityWorkCondition: V4HealthSecurityWorkCondition){
 		this.id = v4HealthSecurityWorkCondition.id;
@@ -31,9 +38,14 @@ export default class V4HealthSecurityWorkConditionDto{
 		this.scoreSPI = v4HealthSecurityWorkCondition.scoreSPI
 		this.healthSecurityPrevention = v4HealthSecurityWorkCondition.healthSecurityPrevention;
 
+		this.workDeath = v4HealthSecurityWorkCondition.workDeath;
+		this.workAccidentNumber = v4HealthSecurityWorkCondition.workAccidentNumber;
+		this.totalWorkHour = v4HealthSecurityWorkCondition.totalWorkHour
+
 		//Criterias that will be used to calculate the vulnerability 
 		this.criteria1 = v4HealthSecurityWorkCondition.criteria1 ?? 0;
 		this.criteria2 = v4HealthSecurityWorkCondition.criteria2 ?? 0;
 		this.criteria3 = v4HealthSecurityWorkCondition.criteria3 ?? 0;
+		this.criteria4 = v4HealthSecurityWorkCondition.criteria4 ?? 0;
 	}
 }
