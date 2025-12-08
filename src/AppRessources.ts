@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {Constant} from "./constant/Constant.js";
 import V1GazEmissionRessources from "./resources/V1GazEmissionResources.js";
-import V4HealthSecurityWorkConditionRessources from "./resources/␇V4HealthSecurityWorkConditionRessources.js";
+import V4HealthSecurityWorkConditionRessources from "./resources/V4HealthSecurityWorkConditionRessources.js";
 
 
 export default class AppResources{
