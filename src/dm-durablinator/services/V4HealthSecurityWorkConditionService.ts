@@ -26,9 +26,13 @@ export default class V4HealthSecurityWorkConditionService {
 						totalWorkerNumber: dto.totalWorkerNumber,
 						scoreSPI: dto.scoreSPI,
 						healthSecurityPrevention: dto.healthSecurityPrevention,
+						workDeath: dto.workDeath,
+						workAccidentNumber: dto.workAccidentNumber,
+						totalWorkHour : dto.totalWorkHour,
 						criteria1 : this.pointFromEl1Crit1(dto.averageHealthInvest, dto.totalHealhInvest) + this.pointFromEl2Crit1(dto.budgetWorkHealthSecurity, dto.totalWorkerNumber),
 						criteria2 : this.pointFromCrit2(dto.scoreSPI),
-						criteria3 : this.pointFromCrit3(dto.healthSecurityPrevention)
+						criteria3 : this.pointFromCrit3(dto.healthSecurityPrevention),
+						criteria4 : this.pointFromEl1Crit4(dto.workDeath) + this.pointFromEl2Crit4(dto.workAccidentNumber,dto.totalWorkHour)
 					})
 				}else {
 					//Create a new instance
@@ -39,9 +43,13 @@ export default class V4HealthSecurityWorkConditionService {
 						totalWorkerNumber: dto.totalWorkerNumber,
 						scoreSPI: dto.scoreSPI,
 						healthSecurityPrevention: dto.healthSecurityPrevention,
+						workDeath: dto.workDeath,
+						workAccidentNumber: dto.workAccidentNumber,
+						totalWorkHour : dto.totalWorkHour,
 						criteria1 : this.pointFromEl1Crit1(dto.averageHealthInvest, dto.totalHealhInvest) + this.pointFromEl2Crit1(dto.budgetWorkHealthSecurity, dto.totalWorkerNumber),
 						criteria2 : this.pointFromCrit2(dto.scoreSPI),
 						criteria3 : this.pointFromCrit3(dto.healthSecurityPrevention),
+						criteria4 : this.pointFromEl1Crit4(dto.workDeath) + this.pointFromEl2Crit4(dto.workAccidentNumber,dto.totalWorkHour)
 					})	
 				}
 				//save the instance
@@ -94,8 +102,20 @@ export default class V4HealthSecurityWorkConditionService {
 		else if (value >= 50 && value < 80){return 1;}
 		else if (value >=80){return 3;}
 		else{return 0;}	
+	}
+	//Refer to tab-19 page 52
+	pointFromEl1Crit4 = (workDeath:boolean):number =>{
+		return workDeath ? 1 : 0;
+	} 
 
-
+	//Refer to tab-20 page 52 
+	pointFromEl2Crit4 = (workAccidentNumber: number|undefined, totalWorkHour: number | undefined) => {
+		if (!workAccidentNumber || !totalWorkHour || totalWorkHour == 0){return 0;}
+		const value = (workAccidentNumber / totalWorkHour) * 1000000;
+		if (value >= 10){return 0;}
+		else if (value < 10 && value >=4){return 2;}
+		else if (value < 4){return 4;}
+		else{return 0;}	
 	}
 	
 }
