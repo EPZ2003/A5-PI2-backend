@@ -61,6 +61,24 @@ export default class V4HealthSecurityWorkConditionService {
 		})
 	}
 
+	getVulnerability = async (id:bigint | undefined) => {
+		try {
+			if(id) {
+				const entity = await this.V4HealthSecurityWorkConditionDao.findById(id)
+				if (entity) {
+					const v4HealthSecurityWorkCondition =  entity.dataValues
+					return this.calculateVulnerability(v4HealthSecurityWorkCondition.criteria1,v4HealthSecurityWorkCondition.criteria2,v4HealthSecurityWorkCondition.criteria3,v4HealthSecurityWorkCondition.criteria4)
+				} else {
+					throw new Error('No V4 entity found')
+				}
+			} else {
+				throw new Error('No provided id')
+			}
+		} catch (err) {
+			console.log(err)
+		}
+	}
+
 	//Refer to  calcul page 45 AND tab-15 page 46
 	pointFromEl1Crit1 = (averageHealthInvest: number | undefined,totalHealhInvest:number | undefined):number =>{
 		if (!averageHealthInvest || !totalHealhInvest || totalHealhInvest ==0){return 0;}
@@ -116,6 +134,12 @@ export default class V4HealthSecurityWorkConditionService {
 		else if (value < 10 && value >=4){return 2;}
 		else if (value < 4){return 4;}
 		else{return 0;}	
+	}
+
+	//Refer to calcul 9.4 page 52
+	calculateVulnerability = (pointCrit1:number|undefined,pointCrit2:number|undefined,pointCrit3:number|undefined,pointCrit4:number|undefined) => {
+		if(pointCrit1==undefined || pointCrit2==undefined || pointCrit3==undefined || pointCrit4==undefined){return;}
+		return pointCrit1 + pointCrit2 + pointCrit3 + pointCrit4;
 	}
 	
 }

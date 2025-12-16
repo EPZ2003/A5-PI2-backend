@@ -14,12 +14,19 @@ export default class V4HealthSecurityWorkConditionRessources {
 	}
 	constructor(){
 		this.save();
+		this.getVulnerability();
 	}
 
 	save(){
 		this._router.post('',expressAsyncHandler(async(req,res)=>{
 			const dto:V4HealthSecurityWorkConditionDto = req.body;
 			res.send(await this.V4HealthSecurityWorkConditionService.save(dto)).status(200)
+		}))
+	}
+	getVulnerability(){
+		this._router.get('/getV4/:id', expressAsyncHandler(async(req,res) => {
+			const id=req.params.id ? BigInt(req.params.id) : undefined
+			res.send(await this.V4HealthSecurityWorkConditionService.getVulnerability(id)).status(200)
 		}))
 	}
 }
