@@ -12,10 +12,14 @@ export default class V4HealthSecurityWorkConditionDto{
 	totalWorkerNumber!:number;
 
 	scoreSPI!:number;
+
+	healthSecurityPrevention!: number;
 	
 	criteria1?: number;
 	
 	criteria2?: number;
+
+	criteria3?: number;
 
 
 	constructor(v4HealthSecurityWorkCondition: V4HealthSecurityWorkCondition){
@@ -25,9 +29,11 @@ export default class V4HealthSecurityWorkConditionDto{
 		this.budgetWorkHealthSecurity = v4HealthSecurityWorkCondition.budgetWorkHealthSecurity
 		this.totalWorkerNumber = v4HealthSecurityWorkCondition.totalWorkerNumber
 		this.scoreSPI = v4HealthSecurityWorkCondition.scoreSPI
+		this.healthSecurityPrevention = v4HealthSecurityWorkCondition.healthSecurityPrevention;
 
 		//Criterias that will be used to calculate the vulnerability 
 		this.criteria1 = v4HealthSecurityWorkCondition.criteria1 ?? 0;
 		this.criteria2 = v4HealthSecurityWorkCondition.criteria2 ?? 0;
+		this.criteria3 = v4HealthSecurityWorkCondition.criteria3 ?? 0;
 	}
 }

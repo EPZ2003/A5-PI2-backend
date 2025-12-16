@@ -24,10 +24,16 @@ export default class V4HealthSecurityWorkCondition extends AbstracEntity{
 	@Column(DataTypes.FLOAT)
 	scoreSPI!:number;
 
+	@Column(DataTypes.FLOAT)
+	healthSecurityPrevention!:number
+
 	@Column
 	criteria1!: number;
 
 	@Column 
 	criteria2!:number;
+
+	@Column
+	criteria3!:number;
 
 }

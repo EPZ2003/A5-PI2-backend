@@ -25,8 +25,10 @@ export default class V4HealthSecurityWorkConditionService {
 						budgetWorkHealthSecurity : dto.budgetWorkHealthSecurity,
 						totalWorkerNumber: dto.totalWorkerNumber,
 						scoreSPI: dto.scoreSPI,
+						healthSecurityPrevention: dto.healthSecurityPrevention,
 						criteria1 : this.pointFromEl1Crit1(dto.averageHealthInvest, dto.totalHealhInvest) + this.pointFromEl2Crit1(dto.budgetWorkHealthSecurity, dto.totalWorkerNumber),
 						criteria2 : this.pointFromCrit2(dto.scoreSPI),
+						criteria3 : this.pointFromCrit3(dto.healthSecurityPrevention)
 					})
 				}else {
 					//Create a new instance
@@ -36,8 +38,10 @@ export default class V4HealthSecurityWorkConditionService {
 						budgetWorkHealthSecurity : dto.budgetWorkHealthSecurity,
 						totalWorkerNumber: dto.totalWorkerNumber,
 						scoreSPI: dto.scoreSPI,
+						healthSecurityPrevention: dto.healthSecurityPrevention,
 						criteria1 : this.pointFromEl1Crit1(dto.averageHealthInvest, dto.totalHealhInvest) + this.pointFromEl2Crit1(dto.budgetWorkHealthSecurity, dto.totalWorkerNumber),
 						criteria2 : this.pointFromCrit2(dto.scoreSPI),
+						criteria3 : this.pointFromCrit3(dto.healthSecurityPrevention),
 					})	
 				}
 				//save the instance
@@ -74,13 +78,24 @@ export default class V4HealthSecurityWorkConditionService {
 		else{return 0;}	
 	}
 	//Refer to tab-17 page 49
-	pointFromCrit2= (scoreSPI: number | undefined) => {
+	pointFromCrit2= (scoreSPI: number | undefined):number => {
 		if(!scoreSPI){return 0;}
 		const value = scoreSPI;
 		if (value < 70){return 0;}
 		else if (value >= 70 && value < 80){return 3;}
 		else if (value >=80){return 5;}
 		else{return 0;}	
+	}
+	//Refer to tab-18 page 50
+	pointFromCrit3 = (healthSecurityPrevention:number | undefined):number => {
+		if(!healthSecurityPrevention){return 0;}
+		const value = healthSecurityPrevention;
+		if (value < 50){return 0;}
+		else if (value >= 50 && value < 80){return 1;}
+		else if (value >=80){return 3;}
+		else{return 0;}	
+
+
 	}
 	
 }
