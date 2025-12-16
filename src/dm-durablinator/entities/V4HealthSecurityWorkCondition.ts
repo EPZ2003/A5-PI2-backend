@@ -1,6 +1,7 @@
 import {Column, Table} from "sequelize-typescript";
 import {Constant} from "../../constant/Constant";
 import AbstracEntity from "../../utils/AbstractEntity";
+import {DataTypes} from "sequelize";
 @Table({
 	timestamps: false,
 	tableName: Constant.PREFIX_TABLE + 'v4_healh_security_work_condition',
@@ -15,12 +16,18 @@ export default class V4HealthSecurityWorkCondition extends AbstracEntity{
 	totalHealhInvest!: number;
 
 	@Column
-	criteria1!: number;
-
-	@Column
 	budgetWorkHealthSecurity!: number;
 
 	@Column
 	totalWorkerNumber!: number;
+
+	@Column(DataTypes.FLOAT)
+	scoreSPI!:number;
+
+	@Column
+	criteria1!: number;
+
+	@Column 
+	criteria2!:number;
 
 }
