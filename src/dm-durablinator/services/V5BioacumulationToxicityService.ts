@@ -26,7 +26,14 @@ export default class V5BioacumulationToxicityService {
                         finalProductRiskMatter: dto.finalProductRiskMatter,
                         finalProductConcentration: dto.finalProductConcentration,
                         finalProductContactAbsence: dto.finalProductContactAbsence,
-                        criteria1: this.calculateCriteria1(dto.makingProcessRisk, dto.makingProcessProtectionMeasure, dto.finalProductRiskMatter, dto.finalProductConcentration, dto.finalProductContactAbsence)
+                        labelWeitherClear: dto.labelWeitherClear,
+                        labelPresencePicto: dto.labelPresencePicto,
+                        labelTauxInferior: dto.labelTauxInferior,
+                        informationReadablity: dto.informationReadablity,
+                        informationWithFds: dto.informationWithFds,
+                        informationPresence: dto.informationPresence,
+                        criteria1: this.calculateCriteria1(dto.makingProcessRisk, dto.makingProcessProtectionMeasure, dto.finalProductRiskMatter, dto.finalProductConcentration, dto.finalProductContactAbsence),
+                        criteria2: this.calculateCriteria2(dto.finalProductRiskMatter, dto.labelWeitherClear, dto.labelPresencePicto, dto.labelTauxInferior, dto.informationReadablity, dto.informationWithFds, dto.informationPresence)
                     })
                 } else {
                     // Fill the instance
@@ -36,7 +43,14 @@ export default class V5BioacumulationToxicityService {
                         finalProductRiskMatter: dto.finalProductRiskMatter,
                         finalProductConcentration: dto.finalProductConcentration,
                         finalProductContactAbsence: dto.finalProductContactAbsence,
-                        criteria1: this.calculateCriteria1(dto.makingProcessRisk, dto.makingProcessProtectionMeasure, dto.finalProductRiskMatter, dto.finalProductConcentration, dto.finalProductContactAbsence)
+                        labelWeitherClear: dto.labelWeitherClear,
+                        labelPresencePicto: dto.labelPresencePicto,
+                        labelTauxInferior: dto.labelTauxInferior,
+                        informationReadablity: dto.informationReadablity,
+                        informationWithFds: dto.informationWithFds,
+                        informationPresence: dto.informationPresence,
+                        criteria1: this.calculateCriteria1(dto.makingProcessRisk, dto.makingProcessProtectionMeasure, dto.finalProductRiskMatter, dto.finalProductConcentration, dto.finalProductContactAbsence),
+                        criteria2: this.calculateCriteria2(dto.finalProductRiskMatter, dto.labelWeitherClear, dto.labelPresencePicto, dto.labelTauxInferior, dto.informationReadablity, dto.informationWithFds, dto.informationPresence)
                     })
                 }
 
@@ -51,7 +65,24 @@ export default class V5BioacumulationToxicityService {
     }
 
     getVulnerability = async (id: bigint | undefined) => {
-        // Empty body as requested
+
+        try {
+            if (id) {
+
+                const entity = await this.v5BioacumulationToxicityDao.findById(id)
+                if (entity) {
+
+                    const v5BioacumulationToxicity = entity.dataValues
+                    return this.calculateVulnerability(v5BioacumulationToxicity.criteria1, v5BioacumulationToxicity.criteria2)
+                } else {
+                    throw new Error('No V5 entity found')
+                }
+            } else {
+                throw new Error('No provided id')
+            }
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     pointFromEl1Crit1 = (makingProcessRisk: boolean, makingProcessProtectionMeasure: boolean): number => {
@@ -86,14 +117,60 @@ export default class V5BioacumulationToxicityService {
             }
         }
     }
+    pointFromEl1Crit2 = (finalProductRiskMatter: boolean, labelWeitherClear: boolean, labelPresencePicto: boolean, labelTauxInferior: boolean): number => {
+        // Refers to fig 3 page 59
+        if (!finalProductRiskMatter) {
+            return 5
+        } else {
+            if (labelWeitherClear) {
+                if (labelPresencePicto) {
+                    return 4
+                } else {
+                    return 3
+                }
+            } else {
+                if (labelTauxInferior) {
+                    return 2
+                } else {
+                    return 0
+                }
+            }
+        }
+    }
 
-    calculateCriteria1 = (makingProcessRisk: boolean, makingProcessProtectionMeasure: boolean, finalProductRiskMatter: boolean, finalProductConcentration: boolean, finalProductContactAbsence: boolean) => {
+    pointFromEl2Crit2 = (finalProductRiskMatter: boolean, informationReadablity: boolean, informationWithFds: boolean, informationPresence: boolean): number => {
+        // Refer to fig 4 page 60
+        if (!finalProductRiskMatter) {
+            return 5
+        } else {
+            if (informationReadablity) {
+                if (informationWithFds) {
+                    if (informationPresence) {
+                        return 4
+                    } else {
+                        return 2
+                    }
+                } else {
+                    return 4
+                }
+            } else {
+                return 0
+            }
+        }
+    }
+
+
+    calculateCriteria1 = (makingProcessRisk: boolean, makingProcessProtectionMeasure: boolean, finalProductRiskMatter: boolean, finalProductConcentration: boolean, finalProductContactAbsence: boolean): number => {
         // Refer to calcul page 57
         return this.pointFromEl1Crit1(makingProcessRisk, makingProcessProtectionMeasure) + this.pointFromEl2Crit1(finalProductRiskMatter, finalProductConcentration, finalProductContactAbsence)
     }
 
-    calculateCriteria2 = () => {
+    calculateCriteria2 = (finalProductRiskMatter: boolean, labelWeitherClear: boolean, labelPresencePicto: boolean, labelTauxInferior: boolean, informationReadablity: boolean, informationWithFds: boolean, informationPresence: boolean): number => {
         // Empty body as requested
+        return this.pointFromEl1Crit2(finalProductRiskMatter, labelWeitherClear, labelPresencePicto, labelTauxInferior) + this.pointFromEl2Crit2(finalProductRiskMatter, informationReadablity, informationWithFds, informationPresence)
+    }
+    calculateVulnerability = (criteria1: number, criteria2: number): number => {
+        return criteria1 + criteria2
     }
 
 }

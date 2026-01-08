@@ -27,7 +27,29 @@ export default class V5BioacumulationToxicity extends AbstracEntity {
 	@Column(DataTypes.BOOLEAN)
 	finalProductContactAbsence: boolean
 
+	@Column(DataTypes.BOOLEAN)
+	labelWeitherClear: boolean;
+
+	@Column(DataTypes.BOOLEAN)
+	labelPresencePicto: boolean;
+
+	@Column(DataTypes.BOOLEAN)
+	labelTauxInferior: boolean;
+
+	@Column(DataTypes.BOOLEAN)
+	informationReadablity: boolean;
+
+	@Column(DataTypes.BOOLEAN)
+	informationWithFds: boolean;
+
+	@Column(DataTypes.BOOLEAN)
+	informationPresence: boolean;
+
 	@Column
 	criteria1!: number
+
+	@Column
+	criteria2!: number
+
 
 }
