@@ -20,9 +20,10 @@ export default class V5BioaccumulationResources {
     }
 
     save() {
-        this._router.post('', expressAsyncHandler(async (req, res) => {
+        this._router.post('/:idIndexDmDurable', expressAsyncHandler(async (req, res) => {
             const dto: V5BioacumulationToxicityDto = req.body;
-            res.send(await this.v5BioacumulationToxicityService.save(dto)).status(200)
+            const idIndexDmDurable = req.params.idIndexDmDurable ? BigInt(req.params.idIndexDmDurable) : undefined
+            res.send(await this.v5BioacumulationToxicityService.save(dto, idIndexDmDurable)).status(200)
         }))
     }
 

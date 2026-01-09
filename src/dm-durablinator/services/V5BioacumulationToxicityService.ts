@@ -3,6 +3,8 @@ import { server } from "../../Server";
 import V5BioacumulationToxicityDto from "../dto/V5BioacumulationToxicityDto";
 import V5BioacumulationToxicityDao from "../dao/V5BioacumulationToxicityDao";
 import V5BioacumulationToxicity from "../entities/V5BioacumulationToxicity";
+import IndexDMDurableDao from "../dao/IndexDMDurableDao";
+import IndexDMDurable from "../entities/IndexDMDurable";
 
 @Service()
 export default class V5BioacumulationToxicityService {
@@ -10,9 +12,19 @@ export default class V5BioacumulationToxicityService {
     @Inject(() => V5BioacumulationToxicityDao)
     v5BioacumulationToxicityDao!: V5BioacumulationToxicityDao
 
-    save = async (dto: V5BioacumulationToxicityDto) => {
+    @Inject(() => IndexDMDurableDao)
+    indexDMDurableDao!: IndexDMDurableDao
+
+    save = async (dto: V5BioacumulationToxicityDto, idIndexDmDurable: bigint | undefined) => {
         return await server.sequelize.transaction(async t => {
             try {
+                if (!idIndexDmDurable) {
+                    throw new Error('No indexDmDurable provided')
+                }
+                const indexDmDurable: IndexDMDurable | null = await this.indexDMDurableDao.findById(idIndexDmDurable)
+                if (!indexDmDurable) {
+                    throw new Error('IndexDmDurable not found')
+                }
                 let v5BioacumulationToxicity: V5BioacumulationToxicity | null;
 
                 if (dto.id) {
@@ -21,6 +33,7 @@ export default class V5BioacumulationToxicityService {
                         throw new Error('V5 not found')
                     }
                     await v5BioacumulationToxicity.update({
+                        indexDMDurableId: indexDmDurable.id,
                         makingProcessRisk: dto.makingProcessRisk,
                         makingProcessProtectionMeasure: dto.makingProcessProtectionMeasure,
                         finalProductRiskMatter: dto.finalProductRiskMatter,
@@ -38,6 +51,7 @@ export default class V5BioacumulationToxicityService {
                 } else {
                     // Fill the instance
                     v5BioacumulationToxicity = V5BioacumulationToxicity.build({
+                        indexDMDurableId: indexDmDurable.id,
                         makingProcessRisk: dto.makingProcessRisk,
                         makingProcessProtectionMeasure: dto.makingProcessProtectionMeasure,
                         finalProductRiskMatter: dto.finalProductRiskMatter,
