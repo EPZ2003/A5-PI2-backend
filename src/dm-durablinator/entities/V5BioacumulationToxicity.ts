@@ -1,7 +1,8 @@
-import { Column, Table } from "sequelize-typescript";
+import { BelongsTo, Column, ForeignKey, Table } from "sequelize-typescript";
 import { Constant } from "../../constant/Constant";
 import AbstracEntity from "../../utils/AbstractEntity";
 import { DataTypes } from "sequelize";
+import IndexDMDurable from "./IndexDMDurable";
 
 @Table({
 	timestamps: false,
@@ -9,6 +10,12 @@ import { DataTypes } from "sequelize";
 	freezeTableName: true
 })
 export default class V5BioacumulationToxicity extends AbstracEntity {
+	@ForeignKey(() => IndexDMDurable)
+	@Column
+	indexDMDurableId!: bigint;
+
+	@BelongsTo(() => IndexDMDurable)
+	indexDMDurable!: IndexDMDurable;
 
 	// Logic schema page 55 Figure 1
 	@Column(DataTypes.BOOLEAN)

@@ -1,19 +1,27 @@
-import {Column, Table} from "sequelize-typescript";
+import { BelongsTo, Column, ForeignKey, Table } from "sequelize-typescript";
 import AbstracEntity from "../../utils/AbstractEntity";
-import {Constant} from "../../constant/Constant";
-import {DataTypes} from "sequelize";
+import { Constant } from "../../constant/Constant";
+import { DataTypes } from "sequelize";
+import IndexDMDurable from "./IndexDMDurable";
 
 @Table({
-	timestamps:false,
+	timestamps: false,
 	tableName: Constant.PREFIX_TABLE + 'v1_gaz_emission',
 	freezeTableName: true
 })
 export default class V1GazEmission extends AbstracEntity {
+	@ForeignKey(() => IndexDMDurable)
 	@Column
-	weightPrimaryMaterialCarbonneEmission!:number;
+	indexDMDurableId!: bigint;
+
+	@BelongsTo(() => IndexDMDurable)
+	indexDMDurable!: IndexDMDurable;
 
 	@Column
-	primaryMaterialCarbonneEmission!:number;
+	weightPrimaryMaterialCarbonneEmission!: number;
+
+	@Column
+	primaryMaterialCarbonneEmission!: number;
 
 	@Column
 	weightFirstMaterialCarbonneEmission!: number;
@@ -26,27 +34,27 @@ export default class V1GazEmission extends AbstracEntity {
 
 	@Column
 	secondMaterialCarbonneEmission!: number;
-	
+
 	@Column(DataTypes.FLOAT)
-	resultElement1?:number
-	
+	resultElement1?: number
+
 	@Column(DataTypes.BOOLEAN)
 	containsRareMaterial!: boolean
-	
+
 	@Column
 	totalElectrictyMix!: number
 
 	@Column(DataTypes.BOOLEAN)
-	greenConsomation!:boolean
+	greenConsomation!: boolean
 
 	@Column(DataTypes.BOOLEAN)
-	greenProductionSite!:boolean
+	greenProductionSite!: boolean
 
 	@Column(DataTypes.BOOLEAN)
 	productionSiteFrench!: boolean
 
 	@Column(DataTypes.FLOAT)
-	transportCoef1!:number
+	transportCoef1!: number
 
 	@Column(DataTypes.FLOAT)
 	transportCoef2!: number
@@ -58,15 +66,15 @@ export default class V1GazEmission extends AbstracEntity {
 	distanceMode2!: number
 
 	@Column
-	fabricationMultisite!:number
+	fabricationMultisite!: number
 
 	@Column
-	criteria1?:number
+	criteria1?: number
 
 	@Column
-	criteria2?:number
+	criteria2?: number
 
 	@Column
-	criteria3?:number
+	criteria3?: number
 
 }
