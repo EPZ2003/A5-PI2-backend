@@ -12,6 +12,7 @@ export default class IndexDMDurableResources {
     constructor() {
         this.getIndexDMDurable();
         this.newIndexDmDurable();
+        this.getDataFromIndexDMDurable();
     }
 
     get router() {
@@ -26,12 +27,18 @@ export default class IndexDMDurableResources {
     }
 
     newIndexDmDurable() {
-        this._router.get('/:nameOfMedicalName', expressAsyncHandler(async (req, res) => {
+        this._router.get('/newDmDurable/:nameOfMedicalName', expressAsyncHandler(async (req, res) => {
             const nameOfMedicalName = req.params.nameOfMedicalName ? req.params.nameOfMedicalName : undefined
             if (!nameOfMedicalName) {
                 throw new Error('No name of medical name provided')
             }
             res.send(await this.indexDMDurableService.newIndexDmDurable(nameOfMedicalName)).status(200)
+        }))
+    }
+    getDataFromIndexDMDurable() {
+        this._router.get('/data/:id', expressAsyncHandler(async (req, res) => {
+            const id = req.params.id ? BigInt(req.params.id) : undefined
+            res.send(await this.indexDMDurableService.getDataFromIndexDMDurable(id)).status(200)
         }))
     }
 

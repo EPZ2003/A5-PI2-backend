@@ -2,7 +2,8 @@ import IndexDMDurable from "../entities/IndexDMDurable";
 import V1GazEmission from "../entities/V1GazEmission";
 import V4HealthSecurityWorkCondition from "../entities/V4HealthSecurityWorkCondition";
 import V5BioacumulationToxicity from "../entities/V5BioacumulationToxicity";
-export default class IndexDMDurableDto {
+
+export default class FinalPageIndexDmDurableDto {
     v1GazEmission: number;
     v2: number;
     v3: number;
