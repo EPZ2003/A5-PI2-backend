@@ -90,7 +90,6 @@ export default class IndexDMDurableService {
             if (!indexDMDurables) {
                 throw new Error('No indexDMDurable found')
             }
-            console.log(indexDMDurables)
             return indexDMDurables
         } catch (err) {
             throw new Error('Error while getting indexDMDurable')
