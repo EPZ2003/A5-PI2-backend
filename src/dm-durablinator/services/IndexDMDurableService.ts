@@ -80,4 +80,21 @@ export default class IndexDMDurableService {
         }
     }
 
+    getAllIndexDMDurable = async () => {
+        try {
+            const indexDMDurables = await this.indexDMDurableDao.findAll([
+                V1GazEmission,
+                V4HealthSecurityWorkCondition,
+                V5BioacumulationToxicity
+            ])
+            if (!indexDMDurables) {
+                throw new Error('No indexDMDurable found')
+            }
+            console.log(indexDMDurables)
+            return indexDMDurables
+        } catch (err) {
+            throw new Error('Error while getting indexDMDurable')
+        }
+    }
+
 }
