@@ -1,6 +1,6 @@
 import { Inject, Service } from "typedi";
 import { server } from "../../Server";
-import IndexDMDurableDto from "../dto/IndexDMDurableDto";
+import FinalPageIndexDmDurableDto from "../dto/FinalPageIndexDmDurableDto";
 import V1GazEmissionService from "./V1GazEmissionService";
 import V4HealthSecurityWorkConditionService from "./V4HealthSecurityWorkConditionService";
 import V5BioacumulationToxicityService from "./V5BioacumulationToxicityService";
@@ -33,7 +33,7 @@ export default class IndexDMDurableService {
     /*@Inject(()=>V6GazEmissionService)
     v6GazEmissionService!: V6GazEmissionService*/
 
-    getIndexDMDurable = async (idIndexDmDurable: bigint | undefined): Promise<IndexDMDurableDto> => {
+    getIndexDMDurable = async (idIndexDmDurable: bigint | undefined): Promise<FinalPageIndexDmDurableDto> => {
 
         if (!idIndexDmDurable) {
             throw new Error('No id provided')
@@ -49,7 +49,7 @@ export default class IndexDMDurableService {
         const v1GazEmission = await this.v1GazEmissionService.getVulnerability(indexDMDurable.v1GazEmission.id)
         const v4HealthSecurityWorkCondition = await this.v4HealthSecurityWorkConditionService.getVulnerability(indexDMDurable.v4HealthSecurityWorkCondition.id)
         const v5BioacumulationToxicity = await this.v5BioacumulationToxicityService.getVulnerability(indexDMDurable.v5BioacumulationToxicity.id)
-        return new IndexDMDurableDto(v1GazEmission, undefined, undefined, v4HealthSecurityWorkCondition, v5BioacumulationToxicity, undefined);
+        return new FinalPageIndexDmDurableDto(v1GazEmission, undefined, undefined, v4HealthSecurityWorkCondition, v5BioacumulationToxicity, undefined);
     }
 
     newIndexDmDurable = async (nameOfMedicalName: string): Promise<number> => {
@@ -59,6 +59,25 @@ export default class IndexDMDurableService {
             await indexDMDurable.save({ transaction: t })
             return Number(indexDMDurable.id)
         })
+    }
+
+    getDataFromIndexDMDurable = async (idIndexDmDurable: bigint | undefined) => {
+        try {
+            if (!idIndexDmDurable) {
+                throw new Error('No id provided')
+            }
+            const indexDMDurable = await this.indexDMDurableDao.findById(idIndexDmDurable, [
+                V1GazEmission,
+                V4HealthSecurityWorkCondition,
+                V5BioacumulationToxicity
+            ])
+            if (!indexDMDurable) {
+                throw new Error('No indexDMDurable found')
+            }
+            return indexDMDurable
+        } catch (err) {
+            throw new Error('Error while getting indexDMDurable')
+        }
     }
 
 }
