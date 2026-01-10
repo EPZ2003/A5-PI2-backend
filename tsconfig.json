@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    // --- File Layout ---
+    "outDir": "./dist",
+    "rootDir": "./src", 
+
+    // --- Module Settings (CRITICAL FIXES) ---
+    "module": "commonjs",             // Changed from 'nodenext' to support standard Node
+    "moduleResolution": "node",       // Standard resolution strategy
+    "target": "ES2020",               // Good balance for modern Node versions
+    "verbatimModuleSyntax": false,    // DISABLED: This was causing your error
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    // Allows importing CommonJS modules (like express) easily
+
+    // --- Decorators (Required for Sequelize/TypeDI) ---
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+
+    // --- Type Checking ---
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "skipLibCheck": true,
+
+    // --- Output ---
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
