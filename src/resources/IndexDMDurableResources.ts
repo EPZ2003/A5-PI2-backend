@@ -13,6 +13,7 @@ export default class IndexDMDurableResources {
         this.getIndexDMDurable();
         this.newIndexDmDurable();
         this.getDataFromIndexDMDurable();
+        this.getAllIndexDMDurable();
     }
 
     get router() {
@@ -35,10 +36,17 @@ export default class IndexDMDurableResources {
             res.send(await this.indexDMDurableService.newIndexDmDurable(nameOfMedicalName)).status(200)
         }))
     }
+
     getDataFromIndexDMDurable() {
         this._router.get('/data/:id', expressAsyncHandler(async (req, res) => {
             const id = req.params.id ? BigInt(req.params.id) : undefined
             res.send(await this.indexDMDurableService.getDataFromIndexDMDurable(id)).status(200)
+        }))
+    }
+
+    getAllIndexDMDurable() {
+        this._router.get('/all-index-dm-durable', expressAsyncHandler(async (req, res) => {
+            res.send(await this.indexDMDurableService.getAllIndexDMDurable()).status(200)
         }))
     }
 
