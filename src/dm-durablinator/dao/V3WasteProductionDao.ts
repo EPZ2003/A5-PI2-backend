@@ -11,4 +11,10 @@ export default class V3WasteProductionDao extends AbstractDao<V3WasteProduction>
 	create = async (data: any, options?: any) => {
 		return await V3WasteProduction.create(data, options);
 	}
+
+	findByIndexDMDurableId = async (indexDMDurableId: bigint): Promise<V3WasteProduction | null> => {
+		return await V3WasteProduction.findOne({
+			where: { indexDMDurableId }
+		});
+	}
 }

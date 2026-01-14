@@ -16,6 +16,7 @@ export default class V3WasteProductionResources {
 	constructor() {
 		this.save();
 		this.getVulnerability();
+		this.getByIndexDMDurable();
 	}
 
 	save() {
@@ -30,6 +31,13 @@ export default class V3WasteProductionResources {
 		this._router.get('/getV3/:id', expressAsyncHandler(async (req, res) => {
 			const id = req.params.id ? BigInt(req.params.id) : undefined
 			res.send(await this.v3WasteProductionService.getVulnerability(id)).status(200)
+		}))
+	}
+
+	getByIndexDMDurable() {
+		this._router.get('/:dmId', expressAsyncHandler(async (req, res) => {
+			const dmId = req.params.dmId ? BigInt(req.params.dmId) : undefined
+			res.send(await this.v3WasteProductionService.getByIndexDMDurable(dmId)).status(200)
 		}))
 	}
 

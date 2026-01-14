@@ -149,6 +149,37 @@ export default class V3WasteProductionService {
 		}
 	}
 
+	getByIndexDMDurable = async (indexDMDurableId: bigint | undefined) => {
+		try {
+			if (!indexDMDurableId) {
+				throw new Error('No indexDMDurable provided')
+			}
+			const v3WasteProduction = await this.v3WasteProductionDao.findByIndexDMDurableId(indexDMDurableId)
+			
+			if (!v3WasteProduction) {
+				// Retourner un objet vide si aucune donnée n'existe
+				return {};
+			}
+
+			// Retourner les champs du formulaire + le score calculé
+			return {
+				id: v3WasteProduction.id,
+				containsRecycledMaterial: v3WasteProduction.containsRecycledMaterial,
+				technicalConstraintsPreventRecycled: v3WasteProduction.technicalConstraintsPreventRecycled,
+				separabilitySituation: v3WasteProduction.separabilitySituation,
+				hasSeparationProcedure: v3WasteProduction.hasSeparationProcedure,
+				packagingRecyclableMass: v3WasteProduction.packagingRecyclableMass,
+				packagingTotalMass: v3WasteProduction.packagingTotalMass,
+				hasNationalRecyclingChannel: v3WasteProduction.hasNationalRecyclingChannel,
+				packagingRecycledMass: v3WasteProduction.packagingRecycledMass,
+				packagingTotalMassForRecycled: v3WasteProduction.packagingTotalMassForRecycled,
+				wasteProductionMastery: v3WasteProduction.wasteProductionMastery || 0
+			};
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	/**
 	 * Critère 1 - Élément 1: Proportion de matériaux recyclés (AFNOR SPEC 2313)
 	 * Si technicalConstraintsPreventRecycled === true : 5 points
