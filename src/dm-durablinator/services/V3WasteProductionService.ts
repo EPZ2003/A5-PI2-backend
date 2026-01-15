@@ -64,62 +64,41 @@ export default class V3WasteProductionService {
 
 				let v3WasteProduction: V3WasteProduction | null;
 
-			// Si mise à jour (id > 0)
-			if (dto.id && dto.id > 0) {
-					v3WasteProduction = await this.v3WasteProductionDao.findById(BigInt(dto.id))
-					if (!v3WasteProduction) {
-						throw new Error('V3 not found')
-					}
-					await v3WasteProduction.update({
-						indexDMDurableId: indexDmDurable.id,
-						// Critère 1 - Élément 1
-						containsRecycledMaterial: dto.containsRecycledMaterial,
-						technicalConstraintsPreventRecycled: dto.technicalConstraintsPreventRecycled,
-						recyclableProportionPoints,
-						// Critère 1 - Élément 2
-						separabilitySituation: dto.separabilitySituation,
-						hasSeparationProcedure: dto.hasSeparationProcedure,
-						separabilityPoints,
-						// Critère 2 - Élément 1
-						packagingRecyclableMass: dto.packagingRecyclableMass,
-						packagingTotalMass: dto.packagingTotalMass,
-						hasNationalRecyclingChannel: dto.hasNationalRecyclingChannel,
-						recyclableMaterialRate,
-						recyclableMaterialPoints,
-						// Critère 2 - Élément 2
-						packagingRecycledMass: dto.packagingRecycledMass,
-						packagingTotalMassForRecycled: dto.packagingTotalMassForRecycled,
-						recycledMaterialRate,
-						recycledMaterialPoints,
-						// Score final
-						wasteProductionMastery
-					}, { transaction: t })
+				// First check if an entity already exists for this indexDMDurableId
+				const existingEntity = await this.v3WasteProductionDao.findOne({ indexDMDurableId: idIndexDmDurable });
+
+				const updateData = {
+					indexDMDurableId: indexDmDurable.id,
+					// Critère 1 - Élément 1
+					containsRecycledMaterial: dto.containsRecycledMaterial,
+					technicalConstraintsPreventRecycled: dto.technicalConstraintsPreventRecycled,
+					recyclableProportionPoints,
+					// Critère 1 - Élément 2
+					separabilitySituation: dto.separabilitySituation,
+					hasSeparationProcedure: dto.hasSeparationProcedure,
+					separabilityPoints,
+					// Critère 2 - Élément 1
+					packagingRecyclableMass: dto.packagingRecyclableMass,
+					packagingTotalMass: dto.packagingTotalMass,
+					hasNationalRecyclingChannel: dto.hasNationalRecyclingChannel,
+					recyclableMaterialRate,
+					recyclableMaterialPoints,
+					// Critère 2 - Élément 2
+					packagingRecycledMass: dto.packagingRecycledMass,
+					packagingTotalMassForRecycled: dto.packagingTotalMassForRecycled,
+					recycledMaterialRate,
+					recycledMaterialPoints,
+					// Score final
+					wasteProductionMastery
+				};
+
+				if (existingEntity) {
+					// Update existing entity
+					await existingEntity.update(updateData, { transaction: t })
+					v3WasteProduction = existingEntity;
 				} else {
-					// Création
-					const createdProduction = await this.v3WasteProductionDao.create({
-						indexDMDurableId: indexDmDurable.id,
-						// Critère 1 - Élément 1
-						containsRecycledMaterial: dto.containsRecycledMaterial,
-						technicalConstraintsPreventRecycled: dto.technicalConstraintsPreventRecycled,
-						recyclableProportionPoints,
-						// Critère 1 - Élément 2
-						separabilitySituation: dto.separabilitySituation,
-						hasSeparationProcedure: dto.hasSeparationProcedure,
-						separabilityPoints,
-						// Critère 2 - Élément 1
-						packagingRecyclableMass: dto.packagingRecyclableMass,
-						packagingTotalMass: dto.packagingTotalMass,
-						hasNationalRecyclingChannel: dto.hasNationalRecyclingChannel,
-						recyclableMaterialRate,
-						recyclableMaterialPoints,
-						// Critère 2 - Élément 2
-						packagingRecycledMass: dto.packagingRecycledMass,
-						packagingTotalMassForRecycled: dto.packagingTotalMassForRecycled,
-						recycledMaterialRate,
-						recycledMaterialPoints,
-						// Score final
-						wasteProductionMastery
-					}, { transaction: t })
+					// Create new entity
+					const createdProduction = await this.v3WasteProductionDao.create(updateData, { transaction: t })
 					v3WasteProduction = createdProduction || null
 				}
 
