@@ -5,8 +5,11 @@ import { Server as IoServer } from 'socket.io';
 import AppResources from './AppRessources';
 import { Constant } from './constant/Constant';
 import V1GazEmission from './dm-durablinator/entities/V1GazEmission';
+import V2WaterConsumption from './dm-durablinator/entities/V2WaterConsumption';
+import V3WasteProduction from './dm-durablinator/entities/V3WasteProduction';
 import V4HealthSecurityWorkCondition from './dm-durablinator/entities/V4HealthSecurityWorkCondition';
 import V5BioacumulationToxicity from './dm-durablinator/entities/V5BioacumulationToxicity';
+import V6InclusionAndDiversity from './dm-durablinator/entities/V6InclusionAndDiversity';
 import IndexDMDurable from './dm-durablinator/entities/IndexDMDurable';
 
 class Server {
@@ -23,7 +26,7 @@ class Server {
 		port: this.port,
 		dialect: "postgres",
 		dialectOptions: {},
-		models: [V1GazEmission, V4HealthSecurityWorkCondition, V5BioacumulationToxicity, IndexDMDurable /*ENTITY TO PUT IN THERE*/],
+		models: [V1GazEmission, V2WaterConsumption, V3WasteProduction, V4HealthSecurityWorkCondition, V5BioacumulationToxicity, V6InclusionAndDiversity, IndexDMDurable],
 		logging: false
 	})
 

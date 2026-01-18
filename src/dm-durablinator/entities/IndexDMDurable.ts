@@ -2,8 +2,11 @@ import { Column, HasOne, Table } from "sequelize-typescript";
 import { Constant } from "../../constant/Constant";
 import AbstractEntity from "../../utils/AbstractEntity";
 import V1GazEmission from "./V1GazEmission";
+import V3WasteProduction from "./V3WasteProduction";
 import V4HealthSecurityWorkCondition from "./V4HealthSecurityWorkCondition";
 import V5BioacumulationToxicity from "./V5BioacumulationToxicity";
+import V2WaterConsumption from "./V2WaterConsumption";
+import V6InclusionAndDiversity from "./V6InclusionAndDiversity";
 
 @Table({
     timestamps: false,
@@ -18,10 +21,19 @@ export default class IndexDMDurable extends AbstractEntity {
     @HasOne(() => V1GazEmission)
     v1GazEmission!: V1GazEmission;
 
+    @HasOne(() => V2WaterConsumption)
+    v2WaterConsumption!: V2WaterConsumption;
+
+    @HasOne(() => V3WasteProduction)
+    v3WasteProduction!: V3WasteProduction;
+
     @HasOne(() => V4HealthSecurityWorkCondition)
     v4HealthSecurityWorkCondition!: V4HealthSecurityWorkCondition;
 
     @HasOne(() => V5BioacumulationToxicity)
     v5BioacumulationToxicity!: V5BioacumulationToxicity;
+
+    @HasOne(() => V6InclusionAndDiversity)
+    v6InclusionAndDiversity!: V6InclusionAndDiversity;
 
 }
